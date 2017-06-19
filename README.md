@@ -29,6 +29,9 @@ of pools you are creating.
 5. To get an object from the pool `PoolManager.Get("PoolName")`
 6. To return an object to the pool, simply deactivate from whichever script is using it with `pooledObject.SetActive(false)` or see Bullet.cs for self deactivating example - the item will be added back to the queue.
 
+**Important:** don't forget `using GameObjectPool;` at the top of the script you
+use to access the pool.
+
 ## Pool is full and leaking over
 
 If the pool leaks over (goes over the max item count that you set) then a logged
