@@ -16,6 +16,8 @@ instructions in the form of serialized `PoolSettings` objects.
 
 ## How to use
 
+See **INSTALLATION.md** on how to import into a project.
+
 See **Example > Scenes > Test** for sample usage involving enemy and player bullet
 pools.
 
@@ -26,7 +28,6 @@ of pools you are creating.
 4. At run time the queue is created and `GameObjectPool.PooledItem` is attached to each instantiated prefab (which was assigned in step 3)
 5. To get an object from the pool `PoolManager.Get("PoolName")`
 6. To return an object to the pool, simply deactivate from whichever script is using it with `pooledObject.SetActive(false)` or see Bullet.cs for self deactivating example - the item will be added back to the queue.
-
 
 ## Pool is full and leaking over
 
