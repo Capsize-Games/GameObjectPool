@@ -1,6 +1,6 @@
 # GameObjectPool
 
-Easily create and access pools of GameObjects to save on money.
+Easily create and access pools of GameObjects to save on memory.
 
 `GameObjectPool.Pool` extends `System.Collections.Generic.Queue` and takes
 instructions in the form of serialized `PoolSettings` objects.
