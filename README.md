@@ -40,5 +40,5 @@ error will occur.
 Checking "Allow Unrestricted Grow" in the pool settings will prevent this error
 message and allow the pool to grow.
 
-**The example herein has Max Item Count set too low in order to
+**The example herein purposely has Max Item Count set too low in order to
 show what happens when the pool is full.**
