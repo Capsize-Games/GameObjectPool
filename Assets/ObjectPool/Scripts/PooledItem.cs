@@ -19,5 +19,4 @@ namespace GameObjectPool
             PoolManager.Deactivate(poolName, gameObject);
         }
     }
-
 }
