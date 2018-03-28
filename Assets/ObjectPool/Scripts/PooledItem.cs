@@ -4,19 +4,31 @@ namespace GameObjectPool
 {
     public class PooledItem : MonoBehaviour
     {
-        public string poolName = "";
+        Pool pool;
+        Rigidbody rb;
+        Transform trans;
 
-        void OnEnable()
+        public Pool Pool
         {
-            if (poolName != "")
-            {
-                PoolManager.Activate(poolName, gameObject);
-            }
+            get { return pool; }
+            set { pool = value; }
+        }
+
+        public Rigidbody Rigidbody
+        {
+            get { return rb; }
         }
 
         void OnDisable()
         {
-            PoolManager.Deactivate(poolName, gameObject);
+            Pool.Deactivate(gameObject);
+        }
+
+        void OnEnable()
+        {
+            if (Rigidbody == null) rb = GetComponent<Rigidbody>();
+            Rigidbody.velocity = Vector3.zero;
+            Rigidbody.angularVelocity = Vector3.zero;
         }
     }
 }

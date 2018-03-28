@@ -108,34 +108,6 @@ NavMeshSettings:
     tileSize: 256
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &733348959
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 733348960}
-  m_Layer: 0
-  m_Name: PlayerBullets
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &733348960
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 733348959}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2054631347}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &807335241
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,38 +191,10 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 807335241}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1177289596
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1177289597}
-  m_Layer: 0
-  m_Name: EnemyBullets
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1177289597
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1177289596}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2054631347}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2054631345
@@ -281,19 +225,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dda56d895cffe44dadc9670de012a1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug: 1
   m_pool:
-  - name: EnemyBulletPool
-    prefab: {fileID: 1669383559759182, guid: eea4d6563bcb3d34b926876ddb7191d0, type: 2}
+  - name: CubePool
+    prefab: {fileID: 1512229642624436, guid: 7aa29bc7804e6b94bb43136a04e2f70e, type: 2}
     startingItemCount: 10
     maxItemCount: 20
-    parent: {fileID: 1177289597}
-    allowUnrestrictedGrowth: 0
-  - name: PlayerBulletPool
-    prefab: {fileID: 1669383559759182, guid: eea4d6563bcb3d34b926876ddb7191d0, type: 2}
+    parent: {fileID: 2054631347}
+    allowUnrestrictedGrowth: 1
+  - name: SpherePool
+    prefab: {fileID: 1019533563834558, guid: a190bad6138ae9444a900486a95d3d30, type: 2}
     startingItemCount: 10
     maxItemCount: 20
-    parent: {fileID: 733348960}
-    allowUnrestrictedGrowth: 0
+    parent: {fileID: 2054631347}
+    allowUnrestrictedGrowth: 1
 --- !u!4 &2054631347
 Transform:
   m_ObjectHideFlags: 0
@@ -303,9 +248,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1177289597}
-  - {fileID: 733348960}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -317,7 +260,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 2054631345}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e303d4eea7f0634fbd3f61748943acb, type: 3}
+  m_Script: {fileID: 11500000, guid: d7cfa7df670d95742868a9d8538a1f20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeOutSpeed: 10

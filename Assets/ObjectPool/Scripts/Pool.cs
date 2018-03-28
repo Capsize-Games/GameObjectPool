@@ -5,76 +5,111 @@ using System.Collections.Generic;
 
 namespace GameObjectPool
 {
-    public class Pool : Queue
+    public class Pool : Queue<GameObject>
     {
-        private PoolSettings settings;
-        private int totalInPool = 0;
+        PoolSettings settings;
+        List<GameObject> activeItems;
 
-        private List<GameObject> activeItems;
-        public List<GameObject> ActiveItems
-        {
-            get
+        #region Properties
+            List<GameObject> ActiveItems
             {
-                if (activeItems == null) activeItems = new List<GameObject>();
-                return activeItems;
+                get
+                {
+                    if (activeItems == null) activeItems = new List<GameObject>();
+                    return activeItems;
+                }
             }
-        }
+
+            public PoolSettings Settings
+            {
+                get { return settings; }
+            }
+
+            public int TotalActive
+            {
+                get
+                {
+                    return ActiveItems.Count;
+                }
+            }
+
+            public int TotalInPool
+            {
+                get
+                {
+                    return ActiveItems.Count + Count;
+                }
+            }
+
+            bool GrowPool
+            {
+                get
+                {
+                    return (Count == 0 || TotalActive >= settings.maxItemCount)
+                        && settings.allowUnrestrictedGrowth;
+                }
+            }
+
+            bool CanDequeue
+            {
+                get
+                {
+                    return (TotalActive < settings.maxItemCount || settings.allowUnrestrictedGrowth)
+                        && Count > 0;
+                }
+            }
+
+            public GameObject Get
+            {
+                get {
+                    GameObject obj = (GrowPool) ? NewItem : null;
+                    if (obj == null && CanDequeue) obj = Dequeue();
+                    if (obj != null) {
+                        ActiveItems.Add(obj);
+                        obj.SetActive(true);
+                    }
+                    return obj;
+                }
+            }
+
+            private GameObject NewItem
+            {
+                get {
+                    var g = GameObject.Instantiate(settings.prefab);
+                    g.SetActive(false);
+                    g.transform.SetParent(settings.parent);
+                    var pi = g.AddComponent<PooledItem>();
+                    pi.Pool = this;
+                    return g;
+                }
+            }
+        #endregion
 
         public Pool(PoolSettings poolSettings) : base()
         {
             this.settings = poolSettings;
-
-            for (int i = 0; i < settings.maxItemCount; i++) Insert();
+            InitializePool();
         }
 
-        public GameObject Get()
+        void InitializePool()
         {
-            try
-            {
-                GameObject obj = (GameObject) Dequeue();
-                ActiveItems.Add(obj);
-                return obj;
-            }
-            catch(InvalidOperationException e)
-            {
-                totalInPool += 1;
-                GameObject obj = InsertAndGet();
-
-                if (!settings.allowUnrestrictedGrowth) Debug.LogError(e.Message + " " +settings.name + " pool is full at "+ totalInPool + "- leaking over by " + (
-                totalInPool - settings.maxItemCount
-                ));
-
-                return obj;
-            }
+            for (int i = 0; i < settings.startingItemCount; i++)
+                Insert(NewItem);
         }
 
-        private GameObject InsertAndGet()
+        private void Insert(GameObject obj)
         {
-            Insert();
-            return Get();
-        }
-
-        private void Insert()
-        {
-            GameObject obj = (GameObject) GameObject.Instantiate(settings.prefab);
-            obj.AddComponent<PooledItem>();
-            PooledItem pi = obj.GetComponent<PooledItem>();
-            pi.poolName = settings.name;
-            obj.transform.SetParent(settings.parent);
-            obj.SetActive(false);
-            totalInPool += 1;
             Enqueue(obj);
         }
 
         public void DeactivateAll()
         {
-            foreach (GameObject obj in ActiveItems) Deactivate(obj);
+            foreach (GameObject obj in ActiveItems) obj.SetActive(false);
         }
 
         public void Deactivate(GameObject obj)
         {
             ActiveItems.Remove(obj);
-            obj.SetActive(false);
             Enqueue(obj);
         }
 
@@ -82,7 +117,6 @@ namespace GameObjectPool
         {
             foreach (GameObject obj in ActiveItems) GameObject.Destroy(obj);
             foreach (GameObject obj in this) GameObject.Destroy(obj);
-            totalInPool = 0;
         }
     }
 }

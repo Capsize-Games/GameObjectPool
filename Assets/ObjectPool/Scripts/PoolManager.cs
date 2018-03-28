@@ -6,106 +6,61 @@ namespace GameObjectPool
 {
     public class PoolManager : MonoBehaviour
     {
-        public PoolSettings[] m_pool;
+        #region Fields
+            const string ERROR_MISSING_MANAGER = "PoolManager script required.";
+            public bool debug = true;
+            public PoolSettings[] m_pool;
+            private static PoolManager instance;
+            private Dictionary<string, Pool> pools;
+        #endregion
 
-        void Start()
-        {}
-
-            private static void PopulatePools()
+        #region Properties
+            public static PoolSettings[] PoolSettings
             {
-                for (int i = 0; i < Instance.m_pool.Length; i++)
-                {
-                    if (!Pools.ContainsKey(Instance.m_pool[i].name))
-                    {
-                        Pools.Add(Instance.m_pool[i].name, null);
-                        Pools[Instance.m_pool[i].name] = new Pool(Instance.m_pool[i]);
-                    }
-                }
+                get { return Instance.m_pool; }
             }
 
-            private static PoolManager instance;
             private static PoolManager Instance
             {
-                get
-                {
-                    if (instance == null)
-                    {
-                        instance = FindObjectOfType(typeof (PoolManager)) as PoolManager;
-                    }
-
-                    if (!instance) Debug.LogError("PoolManager script required.");
-
-                    return instance;
-                }
+                get { return instance; }
             }
 
-            private Dictionary<string, Pool> pools;
-            private static Dictionary<string, Pool> Pools
+            public static Dictionary<string, Pool> Pools
             {
                 get
                 {
-                    if (Instance.pools == null)
-                    {
-                        Instance.pools = new Dictionary<string, Pool>();
-                    }
                     return Instance.pools;
                 }
             }
+        #endregion
 
-            private Dictionary<string, List<GameObject>> activeItems;
-            private static Dictionary<string, List<GameObject>> ActiveItems
-            {
-                get
-                {
-                    if (Instance.activeItems == null)
-                    {
-                        Instance.activeItems = new Dictionary<string, List<GameObject>>();
-                        foreach (KeyValuePair<string, Pool> val in Pools)
-                        {
-                            Instance.activeItems.Add(val.Key, new List<GameObject>());
-                        }
-                    }
-                    return Instance.activeItems;
-                }
-            }
+        void Start()
+        {
+            instance = this;
+            pools = new Dictionary<string, Pool>();
+        }
 
-            public static void Activate(string poolName, GameObject obj)
-            {
-                ActiveItems[poolName].Add(obj);
-            }
+        private static void PopulatePools()
+        {
+            for (int i = 0; i < PoolSettings.Length; i++)
+                if (!Pools.ContainsKey(PoolSettings[i].name))
+                    Pools[PoolSettings[i].name] = new Pool(PoolSettings[i]);
+        }
 
-            public static void Deactivate(string poolName, GameObject obj)
-            {
-                Dictionary<string, Pool> p = Pools;
+        public static GameObject Get(string poolName)
+        {
+            if (!Pools.ContainsKey(poolName)) PopulatePools();
+            return Pools[poolName].Get;
+        }
 
-                if (!ActiveItems.ContainsKey(poolName))
-                {
-                    ActiveItems.Add(poolName, new List<GameObject>());
-                }
-                else
-                {
-                    ActiveItems[poolName].Remove(obj);
-                    if (Pools.ContainsKey(poolName) && Pools[poolName] != null) Pools[poolName].Enqueue(obj);
-                }
-            }
+        public static int TotalInPool(string poolName)
+        {
+            return Pools.ContainsKey(poolName) ? Pools[poolName].TotalInPool : 0;
+        }
 
-            public static void DeactivateAllActiveItems()
-            {
-                foreach (KeyValuePair<string, List<GameObject>> val in ActiveItems)
-                {
-                    foreach (GameObject item in ActiveItems[val.Key])
-                    {
-                        item.SetActive(false);
-                    }
-                }
-            }
-
-            public static GameObject Get(string poolName)
-            {
-                if (!Pools.ContainsKey(poolName)) PopulatePools();
-                GameObject obj = Pools[poolName].Get();
-                obj.SetActive(true);
-                return obj;
-            }
+        public static int TotalActive(string poolName)
+        {
+            return Pools.ContainsKey(poolName) ? Pools[poolName].TotalActive : 0;
         }
     }
+}

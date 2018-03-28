@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace GameObjectPool
 {
-    class Bullet : MonoBehaviour
+    class Shape : MonoBehaviour
     {
         public float timeOutSpeed = 0.2f;
         private float timeout = 0;
