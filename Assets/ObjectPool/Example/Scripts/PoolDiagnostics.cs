@@ -6,8 +6,15 @@ namespace GameObjectPool
     {
         public string poolName = "";
 
-        protected override void Run()
+        void Update()
         {
+            if (Input.GetMouseButton(0)) StartDiagnostics(5000);
+            if (RunDiagnostics) Run();
+        }
+
+        protected void Run()
+        {
+            runstart = Time.realtimeSinceStartup;
             var obj = PoolManager.Get(poolName);
             base.Run();
             if (obj == null) return;

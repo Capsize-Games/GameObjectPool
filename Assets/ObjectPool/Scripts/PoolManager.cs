@@ -50,6 +50,15 @@ namespace GameObjectPool
             return Pools[poolName].Get;
         }
 
+        public static GameObject[] Get(string poolName, int total)
+        {
+            GameObject[] objects = new GameObject[total];
+            for (int i = 0; i < total; i++) {
+                objects[i] = Pools[poolName].Get;
+            }
+            return objects;
+        }
+
         public static int TotalInPool(string poolName)
         {
             return Pools.ContainsKey(poolName) ? Pools[poolName].TotalInPool : 0;
