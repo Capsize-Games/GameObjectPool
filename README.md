@@ -1,13 +1,13 @@
 # GameObjectPool
 
+***Average runtime of 0.0001930632 seconds to spawn an object using `PoolManager` based on 5000 iterations.***
+
 ![alt text](Screenshots/example.gif)
 
 Easily create and access pools of GameObjects to save on memory.
 
 `GameObjectPool.Pool` extends `System.Collections.Generic.Queue` and takes
 instructions in the form of `PoolSettings` objects.
-
-Average runtime of 0.0001930632 seconds to spawn an object using `PoolManager` based on 5000 iterations.
 
 ## PoolSettings
 
