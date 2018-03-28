@@ -1,9 +1,13 @@
 # GameObjectPool
 
+![alt text](Screenshots/example.gif)
+
 Easily create and access pools of GameObjects to save on memory.
 
 `GameObjectPool.Pool` extends `System.Collections.Generic.Queue` and takes
 instructions in the form of `PoolSettings` objects.
+
+Average runtime of 0.01656993 seconds to spawn an object using `PoolManager` based on 5000 iterations.
 
 ## PoolSettings
 
@@ -14,17 +18,36 @@ instructions in the form of `PoolSettings` objects.
 - `Parent` - transform to parent pooled objects to
 - `Allow Unrestricted Growth` - allow pool to continue populating itself with objects after max reached
 
-## Usage
+## Using with a project
 
-**Install:** See *INSTALLATION.md* on how to import into a project.
+### Installation
 
-1. Assign `GameObjectPool.PoolManager` to a game object in your main scene.
-2. On that script set Pool to a number greater than zero -- these are the number
-of pools you are creating.
-3. A list of properties under the dropdown "Element N" will show up, fill out those properties
-4. At run time the queue is created and `GameObjectPool.PooledItem` is attached to each instantiated prefab (which was assigned in step 3)
-5. To get an object from the pool `GameObjectPool.PoolManager.Get("PoolName")`
-6. To return an object to the pool, simply deactivate from whichever script is using it with `pooledObject.SetActive(false)` or see PooledItem.cs for self deactivating example - the item will be added back to the queue.
+1. [Get latest GameObjectPool.unitypackage release from Github](https://github.com/mdmnk/GameObjectPool/releases/latest)
+2. Import package into project through menu in Unity `Assets > Import package > Custom Package...`
+2. Uncheck example if you don't need it
+3. Add ObjectPool project to your version control ignore file
+
+### Scene setup
+
+Assign `GameObjectPool.PoolManager` to a game object in your main scene
+
+![alt text](Screenshots/objectpool_manager_inspector_1.png)
+
+On that game object script set `Pool > Size` to a number greater than zero and a list of properties called "Element N" will show up
+
+![alt text](Screenshots/objectpool_manager_inspector_size.png)
+
+See `PoolSettings` in this file for information regarding the settings available
+
+![alt text](Screenshots/objectpool_manager_inspector_2.png)
+
+#### Get an object from a pool
+
+`GameObjectPool.PoolManager.Get("PoolName")`
+
+#### Return an object to the pool
+
+Use the standard MonoBehaviour method `SetActive(false)` on the game object you want to disable and it will return to its pool.
 
 ## Examples
 
