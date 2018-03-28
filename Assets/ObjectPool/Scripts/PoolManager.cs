@@ -27,10 +27,7 @@ namespace GameObjectPool
 
             public static Dictionary<string, Pool> Pools
             {
-                get
-                {
-                    return Instance.pools;
-                }
+                get { return Instance.pools; }
             }
         #endregion
 
@@ -38,6 +35,7 @@ namespace GameObjectPool
         {
             instance = this;
             pools = new Dictionary<string, Pool>();
+            PopulatePools();
         }
 
         private static void PopulatePools()
@@ -49,7 +47,6 @@ namespace GameObjectPool
 
         public static GameObject Get(string poolName)
         {
-            if (!Pools.ContainsKey(poolName)) PopulatePools();
             return Pools[poolName].Get;
         }
 

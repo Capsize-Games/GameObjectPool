@@ -13,11 +13,7 @@ namespace GameObjectPool
         #region Properties
             List<GameObject> ActiveItems
             {
-                get
-                {
-                    if (activeItems == null) activeItems = new List<GameObject>();
-                    return activeItems;
-                }
+                get { return activeItems; }
             }
 
             public PoolSettings Settings
@@ -27,18 +23,12 @@ namespace GameObjectPool
 
             public int TotalActive
             {
-                get
-                {
-                    return ActiveItems.Count;
-                }
+                get { return ActiveItems.Count; }
             }
 
             public int TotalInPool
             {
-                get
-                {
-                    return ActiveItems.Count + Count;
-                }
+                get { return ActiveItems.Count + Count; }
             }
 
             bool GrowPool
@@ -93,6 +83,7 @@ namespace GameObjectPool
 
         void InitializePool()
         {
+            activeItems = new List<GameObject>();
             for (int i = 0; i < settings.startingItemCount; i++)
                 Insert(NewItem);
         }
