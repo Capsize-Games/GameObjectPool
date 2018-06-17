@@ -44,16 +44,16 @@ namespace GameObjectPool
             {
                 get
                 {
-                    return (TotalActive < settings.maxItemCount || settings.allowUnrestrictedGrowth)
-                        && Count > 0;
+                    return TotalActive < TotalInPool;
                 }
             }
 
             public GameObject Get
             {
                 get {
-                    GameObject obj = (GrowPool) ? NewItem : null;
-                    if (obj == null && CanDequeue) obj = Dequeue();
+                    GameObject obj = null;
+                    if (CanDequeue) obj = Dequeue();
+                    if (obj == null) obj = (GrowPool) ? NewItem : null;
                     if (obj != null) {
                         ActiveItems.Add(obj);
                         obj.SetActive(true);
