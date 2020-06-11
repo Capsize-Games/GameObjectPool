@@ -207,7 +207,6 @@ GameObject:
   - component: {fileID: 2054631347}
   - component: {fileID: 2054631346}
   - component: {fileID: 2054631348}
-  - component: {fileID: 2054631349}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -234,12 +233,8 @@ MonoBehaviour:
     maxItemCount: 20
     parent: {fileID: 2054631347}
     allowUnrestrictedGrowth: 1
-  - name: SpherePool
-    prefab: {fileID: 1019533563834558, guid: a190bad6138ae9444a900486a95d3d30, type: 2}
-    startingItemCount: 10
-    maxItemCount: 20
-    parent: {fileID: 2054631347}
-    allowUnrestrictedGrowth: 1
+    showAnalytics: 0
+  showAnalytics: 0
 --- !u!4 &2054631347
 Transform:
   m_ObjectHideFlags: 0
@@ -264,15 +259,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7cfa7df670d95742868a9d8538a1f20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2054631349
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2054631345}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d50cbe63d79246418e70a1532fa3879, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  poolName: CubePool
+  spherePrefab: {fileID: 1019533563834558, guid: a190bad6138ae9444a900486a95d3d30,
+    type: 2}

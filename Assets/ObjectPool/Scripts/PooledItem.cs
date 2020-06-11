@@ -27,7 +27,8 @@ namespace GameObjectPool
         void OnEnable()
         {
             if (Rigidbody == null) rb = GetComponent<Rigidbody>();
-            if (Rigidbody != null) {
+            if (Rigidbody != null)
+            {
                 Rigidbody.velocity = Vector3.zero;
                 Rigidbody.angularVelocity = Vector3.zero;
             }

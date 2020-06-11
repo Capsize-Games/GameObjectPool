@@ -11,68 +11,71 @@ namespace GameObjectPool
         List<GameObject> activeItems;
 
         #region Properties
-            List<GameObject> ActiveItems
-            {
-                get { return activeItems; }
-            }
+        List<GameObject> ActiveItems
+        {
+            get { return activeItems; }
+        }
 
-            public PoolSettings Settings
-            {
-                get { return settings; }
-            }
+        public PoolSettings Settings
+        {
+            get { return settings; }
+        }
 
-            public int TotalActive
-            {
-                get { return ActiveItems.Count; }
-            }
+        public int TotalActive
+        {
+            get { return ActiveItems.Count; }
+        }
 
-            public int TotalInPool
-            {
-                get { return ActiveItems.Count + Count; }
-            }
+        public int TotalInPool
+        {
+            get { return Count; }
+        }
 
-            bool GrowPool
+        bool GrowPool
+        {
+            get
             {
-                get
+                return Count == 0 && (settings.allowUnrestrictedGrowth || TotalActive < settings.maxItemCount);
+            }
+        }
+
+        bool CanDequeue
+        {
+            get
+            {
+                //return TotalActive < TotalInPool;
+                return TotalInPool > 0;
+            }
+        }
+
+        public GameObject Get
+        {
+            get
+            {
+                GameObject obj = null;
+                if (CanDequeue) obj = Dequeue();
+                if (obj == null) obj = (GrowPool) ? NewItem : null;
+                if (obj != null)
                 {
-                    return (Count == 0 || TotalActive >= settings.maxItemCount)
-                        && settings.allowUnrestrictedGrowth;
+                    ActiveItems.Add(obj);
+                    obj.SetActive(true);
                 }
+                return obj;
             }
+        }
 
-            bool CanDequeue
+        private GameObject NewItem
+        {
+            get
             {
-                get
-                {
-                    return TotalActive < TotalInPool;
-                }
+                var g = GameObject.Instantiate(settings.prefab);
+                g.SetActive(false);
+                g.transform.SetParent(settings.parent);
+                var pi = g.AddComponent<PooledItem>();
+                pi.Pool = this;
+                return g;
             }
-
-            public GameObject Get
-            {
-                get {
-                    GameObject obj = null;
-                    if (CanDequeue) obj = Dequeue();
-                    if (obj == null) obj = (GrowPool) ? NewItem : null;
-                    if (obj != null) {
-                        ActiveItems.Add(obj);
-                        obj.SetActive(true);
-                    }
-                    return obj;
-                }
-            }
-
-            private GameObject NewItem
-            {
-                get {
-                    var g = GameObject.Instantiate(settings.prefab);
-                    g.SetActive(false);
-                    g.transform.SetParent(settings.parent);
-                    var pi = g.AddComponent<PooledItem>();
-                    pi.Pool = this;
-                    return g;
-                }
-            }
+        }
         #endregion
 
         public Pool(PoolSettings poolSettings) : base()

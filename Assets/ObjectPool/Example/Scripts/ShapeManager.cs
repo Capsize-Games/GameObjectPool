@@ -2,48 +2,53 @@ using UnityEngine;
 
 namespace GameObjectPool
 {
+    /// <summary>
+    /// This class is meant to demonstrate how to use an object pool.
+    /// Use the same techniques found in this class wherever you need to spawn a game object from the Object Pool.
+    /// </summary>
     class ShapeManager : MonoBehaviour
     {
-        string cubePool = "CubePool";
-        string spherePool = "SpherePool";
+        const string cubePool = "CubePool";
+        const string spherePool = "SpherePool";
+        public GameObject spherePrefab;
 
-        void Update()
+        private void Start()
         {
-            if (Input.GetMouseButton(0))
-                SetPosition(PoolManager.Get(cubePool));
-            if (Input.GetMouseButton(1))
-                SetPosition(PoolManager.Get(spherePool));
+            PoolManager.AddPool(new PoolSettings
+            {
+                name = "SpherePool",
+                prefab = spherePrefab,
+                startingItemCount = 10,
+                maxItemCount = 50,
+                parent = this.transform,
+                allowUnrestrictedGrowth = true
+            });
         }
 
-        void SetPosition(GameObject obj)
+        /// <summary>
+        /// Listen for mouse clicks and get an object from the appropriate PoolManager.
+        /// After an object is returned from the PoolManager, it is passed to the SetPosition method.
+        /// These same techniques could be used for things such as FPS bullet spawners in an FPS game.
+        /// </summary>
+        void Update()
         {
-            if (obj == null) return;
-            obj.transform.position = new Vector3(
+            Vector3 location = new Vector3(
                 Camera.main.ScreenToWorldPoint(Input.mousePosition).x,
                 Camera.main.ScreenToWorldPoint(Input.mousePosition).y,
                 0
             );
-        }
 
-        void OnGUI()
-        {
-            GUI.Label(
-                new Rect(10, 10, 400, 20),
-                cubePool
-            );
-            GUI.Label(
-                new Rect(10, 30, 400, 20),
-                "Total: " + PoolManager.TotalActive(cubePool) + " Active: " + PoolManager.TotalActive(cubePool)
-            );
+            // On left mouse click, spawn a cube object from the cube pool.
+            if (Input.GetMouseButton(0)) PoolManager.Get(cubePool, location, Random.rotation);
 
-            GUI.Label(
-                new Rect(10, 50, 400, 20),
-                spherePool
-            );
-            GUI.Label(
-                new Rect(10, 70, 400, 20),
-                "Total: " + PoolManager.TotalActive(spherePool) + " Active: " + PoolManager.TotalActive(spherePool)
-            );
+            // On right mouse click, spawn a sphere object from the sphere pool.
+            if (Input.GetMouseButton(1))
+            {
+                if (PoolManager.HasPool(spherePool))
+                {
+                    PoolManager.Get(spherePool, location, Random.rotation);
+                }
+            }
         }
     }
 }

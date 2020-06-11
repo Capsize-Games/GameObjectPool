@@ -12,7 +12,7 @@ namespace GameObjectPool
             if (RunDiagnostics) Run();
         }
 
-        protected void Run()
+        new protected void Run()
         {
             runstart = Time.realtimeSinceStartup;
             var obj = PoolManager.Get(poolName);

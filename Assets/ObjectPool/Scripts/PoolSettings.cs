@@ -13,5 +13,6 @@ namespace GameObjectPool
         public int maxItemCount;
         public Transform parent;
         public bool allowUnrestrictedGrowth = false;
+        public bool showAnalytics;
     }
 }

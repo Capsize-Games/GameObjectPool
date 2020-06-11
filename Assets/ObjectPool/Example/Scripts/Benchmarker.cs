@@ -32,7 +32,7 @@ namespace GameObjectPool
             float t = Time.realtimeSinceStartup - runstart;
             results[totalRuns] = t;
             total += results[totalRuns];
-            report = "Average runtime ("+ (totalRuns + 1) +" iterations): " + total / (float) totalRuns + " with a total runtime of " + total;
+            report = "Average runtime (" + (totalRuns + 1) + " iterations): " + total / (float)totalRuns + " with a total runtime of " + total;
             totalRuns += 1;
             if (totalRuns >= maxRuns) runDiagnostics = false;
         }
