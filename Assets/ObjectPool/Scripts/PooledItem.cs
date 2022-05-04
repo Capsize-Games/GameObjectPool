@@ -4,20 +4,11 @@ namespace GameObjectPool
 {
     public class PooledItem : MonoBehaviour
     {
-        Pool pool;
-        Rigidbody rb;
-        Transform trans;
+        public string name;
 
-        public Pool Pool
-        {
-            get { return pool; }
-            set { pool = value; }
-        }
-
-        public Rigidbody Rigidbody
-        {
-            get { return rb; }
-        }
+        public Pool Pool;
+        
+        public Rigidbody Rigidbody { get; private set; }
 
         void OnDisable()
         {
@@ -26,7 +17,7 @@ namespace GameObjectPool
 
         void OnEnable()
         {
-            if (Rigidbody == null) rb = GetComponent<Rigidbody>();
+            if (Rigidbody == null) Rigidbody = GetComponent<Rigidbody>();
             if (Rigidbody != null)
             {
                 Rigidbody.velocity = Vector3.zero;
