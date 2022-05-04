@@ -106,10 +106,10 @@ namespace GameObjectPool
 
         public void InitializePool()
         {
-            activeItems = new List<GameObject>();
+            FindExistingPoolItems();
             var max = settings.startingItemCount;
             if (!settings.allowUnrestrictedGrowth && max > settings.maxItemCount) max = settings.maxItemCount;
-            for (int i = 0; i < max; i++)
+            for (int i = TotalInPool; i < max; i++)
                 Insert(NewItem);
         }
 
