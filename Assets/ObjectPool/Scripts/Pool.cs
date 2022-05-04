@@ -13,7 +13,11 @@ namespace GameObjectPool
         #region Properties
         List<GameObject> ActiveItems
         {
-            get { return activeItems; }
+            get
+            {
+                if (activeItems == null) activeItems = new List<GameObject>();
+                return activeItems;
+            }
         }
 
         public PoolSettings Settings
