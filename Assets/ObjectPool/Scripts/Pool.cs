@@ -39,14 +39,7 @@ namespace GameObjectPool
             }
         }
 
-        bool CanDequeue
-        {
-            get
-            {
-                //return TotalActive < TotalInPool;
-                return TotalInPool > 0;
-            }
-        }
+        bool CanDequeue => TotalInPool > 0;
 
         public GameObject Get
         {
