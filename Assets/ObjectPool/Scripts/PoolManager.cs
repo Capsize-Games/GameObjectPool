@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace GameObjectPool
@@ -11,7 +10,6 @@ namespace GameObjectPool
         public bool debug = true;
         public List<PoolSettings> m_pool = new List<PoolSettings>();
         public bool showAnalytics = false;
-        private static List<PoolSettings> deferredPool = new List<PoolSettings>();
         private static PoolManager instance;
         private Dictionary<string, Pool> pools;
         #endregion
@@ -36,44 +34,25 @@ namespace GameObjectPool
 
         void Start()
         {
-            instance = this;
-            pools = new Dictionary<string, Pool>();
-            for (int i = 0; i < deferredPool.Count; i++)
-            {
-                PoolSettings.Add(deferredPool[i]);
-            }
-            deferredPool.Clear();
-            PopulatePools();
-        }
-
-        public static void AddPoolDeferred(PoolSettings settings)
-        {
-            deferredPool.Add(settings);
+            if (instance == null) instance = this;
+            GeneratePools(false);
         }
 
         public static void AddPool(PoolSettings settings)
         {
-            if (Instance)
-            {
-                PoolSettings.Add(settings);
-                Pools[settings.name] = new Pool(settings);
-            }
-            else
-            {
-                AddPoolDeferred(settings);
-            }
-        }
-
-        public static bool HasPool(string poolName)
-        {
-            return Pools.ContainsKey(poolName);
+            PoolSettings.Add(settings);
+            Pools.Add(settings.name, new Pool(settings));
         }
 
         private static void PopulatePools()
         {
-            for (int i = 0; i < PoolSettings.Count; i++)
-                if (!Pools.ContainsKey(PoolSettings[i].name))
-                    Pools[PoolSettings[i].name] = new Pool(PoolSettings[i]);
+            foreach (var settings in PoolSettings)
+            {
+                if (!Pools.ContainsKey(settings.name))
+                {
+                    Pools.Add(settings.name, new Pool(settings));
+                }
+            }
         }
 
         public static GameObject Get(string poolName, Vector3 position, Quaternion rotation, Transform parent)
@@ -99,7 +78,7 @@ namespace GameObjectPool
 
         public static GameObject Get(string poolName)
         {
-            if (PoolManager.HasPool(poolName))
+            if (Pools.ContainsKey(poolName))
             {    
                 return Instance.GetPool(poolName).Get;
             }
@@ -111,19 +90,25 @@ namespace GameObjectPool
             GameObject[] objects = new GameObject[total];
             for (int i = 0; i < total; i++)
             {
-                objects[i] = Pools[poolName].Get;
+                objects[i] = Instance.GetPool(poolName).Get;
             }
             return objects;
         }
 
+        public Pool GetPool(string poolName) => Pools[poolName];
+
         public static int TotalInPool(string poolName)
         {
-            return Pools.ContainsKey(poolName) ? Pools[poolName].TotalInPool : 0;
+            var pool = Instance.GetPool(poolName);
+            if (pool != null) return pool.TotalInPool;
+            return 0;
         }
 
         public static int TotalActive(string poolName)
         {
-            return Pools.ContainsKey(poolName) ? Pools[poolName].TotalActive : 0;
+            var pool = Instance.GetPool(poolName);
+            if (pool != null) return pool.TotalActive;
+            return 0;
         }
 
         /// <summary>
@@ -133,11 +118,11 @@ namespace GameObjectPool
         {
             if (showAnalytics)
             {
-                for (int i = 0; i < PoolSettings.Count; i++)
+                for (int i = 0; i < m_pool.Count; i++)
                 {
-                    if (PoolSettings[i].showAnalytics)
+                    if (m_pool[i].showAnalytics)
                     {
-                        string name = PoolSettings[i].name;
+                        string name = m_pool[i].name;
                         GUI.Label(
                             new Rect(10, 10 + (i * 40), 400, 20),
                             name
@@ -147,6 +132,29 @@ namespace GameObjectPool
                             "Available in Pool: " + TotalInPool(name) + " Active: " + TotalActive(name)
                         );
                     }
+                }
+            }
+        }
+
+        public void GeneratePools(bool doDestroy = true)
+        {
+            if (instance == null) instance = this;
+            
+            GameObject[] objects = FindObjectsOfType<GameObject>(true);
+            if (doDestroy)
+            {
+                foreach (var obj in objects)
+                {
+                    if (obj.GetComponent<PooledItem>() != null) DestroyImmediate(obj);
+                }
+            }
+            Pools = new Dictionary<string, Pool>();
+
+            foreach (var settings in m_pool)
+            {
+                if (!Pools.ContainsKey(settings.name))
+                {
+                    Pools.Add(settings.name, new Pool(settings));
                 }
             }
         }
