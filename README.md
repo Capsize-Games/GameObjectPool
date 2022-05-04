@@ -41,7 +41,11 @@ On that game object script set `Pool > Size` to a number greater than zero and a
 
 See `PoolSettings` in this file for information regarding the settings available
 
-![alt text](Screenshots/objectpool_manager_inspector_2.png)
+![image](https://user-images.githubusercontent.com/25737761/166725509-bea923b5-fb23-4039-ac37-bf88db16b431.png)
+
+Clicking on the "Regenerate pool" button will cause the Pool Manager to regenerate (or generate if clicked the first time) the pools according to the settings in the Pool Manager. This allows you to generate GameObjects for the pool within the editor rather than at run-time.
+
+**Note** Items will still be generated at run time if the pool does not have the minimum number of start items in it at run time.
 
 #### Get an object from a pool
 
