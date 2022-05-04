@@ -73,7 +73,7 @@ namespace GameObjectPool
 
         public Pool(PoolSettings poolSettings) : base()
         {
-            this.settings = poolSettings;
+            settings = poolSettings;
             InitializePool();
         }
 
