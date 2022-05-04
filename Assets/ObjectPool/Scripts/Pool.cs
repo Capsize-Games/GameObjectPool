@@ -111,8 +111,8 @@ namespace GameObjectPool
 
         public void DestroyAll()
         {
-            foreach (GameObject obj in ActiveItems) GameObject.Destroy(obj);
-            foreach (GameObject obj in this) GameObject.Destroy(obj);
+            foreach (var obj in ActiveItems) Object.Destroy(obj);
+            foreach (var obj in this) Object.Destroy(obj);
         }
     }
 }
