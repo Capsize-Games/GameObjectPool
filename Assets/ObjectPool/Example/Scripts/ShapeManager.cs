@@ -12,7 +12,9 @@ namespace GameObjectPool
         const string spherePool = "SpherePool";
         public GameObject spherePrefab;
 
-        private void Start()
+        // Use the following code to add a pool at run-time (not recommended)
+        /*
+        private void Awake()
         {
             PoolManager.AddPool(new PoolSettings
             {
@@ -24,6 +26,7 @@ namespace GameObjectPool
                 allowUnrestrictedGrowth = true
             });
         }
+        */
 
         /// <summary>
         /// Listen for mouse clicks and get an object from the appropriate PoolManager.
