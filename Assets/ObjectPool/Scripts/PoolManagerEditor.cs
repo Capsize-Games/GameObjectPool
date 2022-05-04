@@ -10,10 +10,17 @@ namespace GameObjectPool
         public override void OnInspectorGUI()
         {
             DrawDefaultInspector();
-            PoolManager myScript = (PoolManager)target;
+            var poolManager = (PoolManager)target;
+
             if (GUILayout.Button("Add Pool"))
             {
-                myScript.m_pool.Add(new PoolSettings());
+                poolManager.m_pool.Add(new PoolSettings());
+            }
+
+            if (GUILayout.Button("Regenerate pools"))
+            {
+                poolManager.GeneratePools();
+                EditorUtility.SetDirty(poolManager.gameObject);
             }
         }
     }
