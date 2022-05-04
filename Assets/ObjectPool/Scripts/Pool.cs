@@ -62,10 +62,10 @@ namespace GameObjectPool
             get
             {
                 var g = GameObject.Instantiate(settings.prefab);
-                g.SetActive(false);
                 g.transform.SetParent(settings.parent);
-                var pi = g.AddComponent<PooledItem>();
-                pi.Pool = this;
+                g.AddComponent<PooledItem>();
+                InitializePoolItem(g);
+                g.SetActive(false);
                 return g;
             }
         }
@@ -77,7 +77,34 @@ namespace GameObjectPool
             InitializePool();
         }
 
-        void InitializePool()
+        private void InitializePoolItem(GameObject obj)
+        {
+            var pi = obj.GetComponent<PooledItem>();
+            if (pi == null) return;
+            pi.name = settings.name;
+            pi.Pool = this;
+        }
+
+        private bool GameObjectBelongsToThisPool(GameObject obj)
+        {
+            var pooledItem = obj.GetComponent<PooledItem>();
+            return pooledItem != null && pooledItem.name == settings.name;
+        }
+
+        private void FindExistingPoolItems()
+        {
+            GameObject[] objects = Object.FindObjectsOfType<GameObject>(true);
+            foreach (var obj in objects)
+            {
+                if (GameObjectBelongsToThisPool(obj))
+                {
+                    InitializePoolItem(obj);
+                    Insert(obj);
+                }
+            }
+        }
+
+        public void InitializePool()
         {
             activeItems = new List<GameObject>();
             var max = settings.startingItemCount;
