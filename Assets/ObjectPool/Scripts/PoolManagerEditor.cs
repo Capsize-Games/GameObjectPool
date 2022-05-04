@@ -20,7 +20,6 @@ namespace GameObjectPool
             if (GUILayout.Button("Regenerate pools"))
             {
                 poolManager.GeneratePools();
-                EditorUtility.SetDirty(poolManager.gameObject);
             }
         }
     }
