@@ -12,7 +12,8 @@ namespace GameObjectPool
 
         void OnDisable()
         {
-            Pool.Deactivate(gameObject);
+            if (gameObject == null) return;
+            Pool?.Deactivate(gameObject);
         }
 
         void OnEnable()
