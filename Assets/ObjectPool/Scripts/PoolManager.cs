@@ -75,6 +75,14 @@ namespace GameObjectPool
             if (obj) obj.transform.position = position;
             return obj;
         }
+        
+        public static GameObject Get(string poolName, Transform transform)
+        {
+            GameObject obj = Get(poolName);
+            obj.transform.position = transform.position;
+            obj.transform.rotation = transform.rotation;
+            return obj;
+        }
 
         public static GameObject Get(string poolName)
         {
