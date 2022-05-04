@@ -98,7 +98,11 @@ namespace GameObjectPool
 
         public static GameObject Get(string poolName)
         {
-            return Pools[poolName].Get;
+            if (PoolManager.HasPool(poolName))
+            {    
+                return Instance.GetPool(poolName).Get;
+            }
+            return null;
         }
 
         public static GameObject[] Get(string poolName, int total)

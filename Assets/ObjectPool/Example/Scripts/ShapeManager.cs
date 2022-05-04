@@ -47,10 +47,7 @@ namespace GameObjectPool
             // On right mouse click, spawn a sphere object from the sphere pool.
             if (Input.GetMouseButton(1))
             {
-                if (PoolManager.HasPool(spherePool))
-                {
-                    PoolManager.Get(spherePool, location, Random.rotation);
-                }
+                PoolManager.Get(spherePool, location, Random.rotation);
             }
         }
     }
