@@ -29,7 +29,8 @@ namespace GameObjectPool
 
         public static Dictionary<string, Pool> Pools
         {
-            get { return Instance.pools; }
+            get => Instance.pools ?? (Instance.pools = new Dictionary<string, Pool>());
+            private set => Instance.pools = value;
         }
         #endregion
 
