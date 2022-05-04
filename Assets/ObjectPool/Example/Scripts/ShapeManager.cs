@@ -42,7 +42,10 @@ namespace GameObjectPool
             );
 
             // On left mouse click, spawn a cube object from the cube pool.
-            if (Input.GetMouseButton(0)) PoolManager.Get(cubePool, location, Random.rotation);
+            if (Input.GetMouseButton(0))
+            {
+                PoolManager.Get(cubePool, location, Random.rotation);
+            }
 
             // On right mouse click, spawn a sphere object from the sphere pool.
             if (Input.GetMouseButton(1))
