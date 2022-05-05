@@ -1,6 +1,7 @@
+using ObjectPool.Scripts;
 using UnityEngine;
 
-namespace GameObjectPool
+namespace ObjectPool.Example.Scripts
 {
     /// <summary>
     /// This class is meant to demonstrate how to use an object pool.

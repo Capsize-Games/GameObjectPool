@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using ObjectPool.Scripts;
 using UnityEditor;
 
 namespace GameObjectPool

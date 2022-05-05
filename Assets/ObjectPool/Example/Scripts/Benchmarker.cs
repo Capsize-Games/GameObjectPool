@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GameObjectPool
+namespace ObjectPool.Example.Scripts
 {
     class Benchmarker : MonoBehaviour
     {

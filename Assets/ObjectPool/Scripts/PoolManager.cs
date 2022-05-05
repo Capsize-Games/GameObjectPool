@@ -1,7 +1,7 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
-namespace GameObjectPool
+namespace ObjectPool.Scripts
 {
     public class PoolManager : MonoBehaviour
     {

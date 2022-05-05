@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GameObjectPool
+namespace ObjectPool.Scripts
 {
     public class PooledItem : MonoBehaviour
     {

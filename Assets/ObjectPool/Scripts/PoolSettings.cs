@@ -1,8 +1,6 @@
 using UnityEngine;
-using System;
-using System.Collections;
 
-namespace GameObjectPool
+namespace ObjectPool.Scripts
 {
     [System.Serializable]
     public class PoolSettings

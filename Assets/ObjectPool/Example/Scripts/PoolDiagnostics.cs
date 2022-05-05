@@ -1,6 +1,7 @@
+using ObjectPool.Scripts;
 using UnityEngine;
 
-namespace GameObjectPool
+namespace ObjectPool.Example.Scripts
 {
     class PoolDiagnostics : Benchmarker
     {
