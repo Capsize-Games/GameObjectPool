@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ObjectPool.Example.Scripts
 {
-    internal class PoolDiagnostics : Benchmarker
+    internal class PoolDiagnostics : BenchMarker
     {
         public string poolName = "";
 
@@ -13,17 +13,18 @@ namespace ObjectPool.Example.Scripts
             if (RunDiagnostics) Run();
         }
 
-        protected new void Run()
+        private new void Run()
         {
-            runstart = Time.realtimeSinceStartup;
+            runStart = Time.realtimeSinceStartup;
             var obj = PoolManager.Get(poolName);
             base.Run();
             if (obj == null) return;
-            obj.transform.position = new Vector3(
-                Camera.main.ScreenToWorldPoint(Input.mousePosition).x,
-                Camera.main.ScreenToWorldPoint(Input.mousePosition).y,
-                0
-            );
+            if (Camera.main != null)
+                obj.transform.position = new Vector3(
+                    Camera.main.ScreenToWorldPoint(Input.mousePosition).x,
+                    Camera.main.ScreenToWorldPoint(Input.mousePosition).y,
+                    0
+                );
         }
     }
 }

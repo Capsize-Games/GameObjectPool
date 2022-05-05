@@ -5,7 +5,43 @@ namespace ObjectPool.Scripts
 {
     public class Pool : Queue<GameObject>
     {
-        private List<GameObject> activeItems;
+        private List<GameObject> _activeItems;
+
+        #region Properties
+        private List<GameObject> ActiveItems => _activeItems ??= new List<GameObject>();
+        private PoolSettings Settings { get; }
+        public int TotalActive => ActiveItems.Count;
+        public int TotalInPool => Count;
+        private bool GrowPool =>
+            Count == 0 && (Settings.allowUnrestrictedGrowth || TotalActive < Settings.maxItemCount);
+        private bool CanDequeue => TotalInPool > 0;
+
+        public GameObject Get
+        {
+            get
+            {
+                GameObject obj = null;
+                if (CanDequeue) obj = Dequeue();
+                if (obj == null) obj = GrowPool ? NewItem : null;
+                if (obj == null) return obj;
+                ActiveItems.Add(obj);
+                obj.SetActive(true);
+                return obj;
+            }
+        }
+
+        private GameObject NewItem
+        {
+            get
+            {
+                var g = Object.Instantiate(Settings.prefab, Settings.parent, true);
+                g.AddComponent<PooledItem>();
+                InitializePoolItem(g);
+                g.SetActive(false);
+                return g;
+            }
+        }
+        #endregion
 
         public Pool(PoolSettings poolSettings)
         {
@@ -18,7 +54,7 @@ namespace ObjectPool.Scripts
             var pi = obj.GetComponent<PooledItem>();
             if (pi == null) return;
             pi.name = Settings.name;
-            pi.Pool = this;
+            pi.pool = this;
         }
 
         private bool GameObjectBelongsToThisPool(GameObject obj)
@@ -38,7 +74,7 @@ namespace ObjectPool.Scripts
                 }
         }
 
-        public void InitializePool()
+        private void InitializePool()
         {
             FindExistingPoolItems();
             var max = Settings.startingItemCount;
@@ -68,59 +104,5 @@ namespace ObjectPool.Scripts
             foreach (var obj in ActiveItems) Object.Destroy(obj);
             foreach (var obj in this) Object.Destroy(obj);
         }
-
-        #region Properties
-
-        private List<GameObject> ActiveItems
-        {
-            get
-            {
-                if (activeItems == null) activeItems = new List<GameObject>();
-                return activeItems;
-            }
-        }
-
-        public PoolSettings Settings { get; }
-
-        public int TotalActive => ActiveItems.Count;
-
-        public int TotalInPool => Count;
-
-        private bool GrowPool =>
-            Count == 0 && (Settings.allowUnrestrictedGrowth || TotalActive < Settings.maxItemCount);
-
-        private bool CanDequeue => TotalInPool > 0;
-
-        public GameObject Get
-        {
-            get
-            {
-                GameObject obj = null;
-                if (CanDequeue) obj = Dequeue();
-                if (obj == null) obj = GrowPool ? NewItem : null;
-                if (obj != null)
-                {
-                    ActiveItems.Add(obj);
-                    obj.SetActive(true);
-                }
-
-                return obj;
-            }
-        }
-
-        private GameObject NewItem
-        {
-            get
-            {
-                var g = Object.Instantiate(Settings.prefab);
-                g.transform.SetParent(Settings.parent);
-                g.AddComponent<PooledItem>();
-                InitializePoolItem(g);
-                g.SetActive(false);
-                return g;
-            }
-        }
-
-        #endregion
     }
 }

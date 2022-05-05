@@ -9,8 +9,8 @@ namespace ObjectPool.Example.Scripts
     /// </summary>
     internal class ShapeManager : MonoBehaviour
     {
-        private const string cubePool = "CubePool";
-        private const string spherePool = "SpherePool";
+        private const string CubePool = "CubePool";
+        private const string SpherePool = "SpherePool";
         public GameObject spherePrefab;
 
         // Use the following code to add a pool at run-time (not recommended)
@@ -43,10 +43,10 @@ namespace ObjectPool.Example.Scripts
             );
 
             // On left mouse click, spawn a cube object from the cube pool.
-            if (Input.GetMouseButton(0)) PoolManager.Get(cubePool, location, Random.rotation);
+            if (Input.GetMouseButton(0)) PoolManager.Get(CubePool, location, Random.rotation);
 
             // On right mouse click, spawn a sphere object from the sphere pool.
-            if (Input.GetMouseButton(1)) PoolManager.Get(spherePool, location, Random.rotation);
+            if (Input.GetMouseButton(1)) PoolManager.Get(SpherePool, location, Random.rotation);
         }
     }
 }

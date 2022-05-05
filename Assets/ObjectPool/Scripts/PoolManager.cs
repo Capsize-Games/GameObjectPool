@@ -5,6 +5,21 @@ namespace ObjectPool.Scripts
 {
     public class PoolManager : MonoBehaviour
     {
+        #region Fields
+        public List<PoolSettings> mPool = new();
+        public bool showAnalytics;
+        private Dictionary<string, Pool> _pools;
+        #endregion
+
+        #region Properties
+        private static PoolManager Instance { get; set; }
+        private static Dictionary<string, Pool> Pools
+        {
+            get => Instance._pools ?? (Instance._pools = new Dictionary<string, Pool>());
+            set => Instance._pools = value;
+        }
+        #endregion
+
         private void Start()
         {
             if (Instance == null) Instance = this;
@@ -16,33 +31,20 @@ namespace ObjectPool.Scripts
         /// </summary>
         private void OnGUI()
         {
-            if (showAnalytics)
-                for (var i = 0; i < m_pool.Count; i++)
-                    if (m_pool[i].showAnalytics)
-                    {
-                        var name = m_pool[i].name;
-                        GUI.Label(
-                            new Rect(10, 10 + i * 40, 400, 20),
-                            name
-                        );
-                        GUI.Label(
-                            new Rect(10, 30 + i * 40, 400, 20),
-                            "Available in Pool: " + TotalInPool(name) + " Active: " + TotalActive(name)
-                        );
-                    }
-        }
-
-        public static void AddPool(PoolSettings settings)
-        {
-            PoolSettings.Add(settings);
-            Pools.Add(settings.name, new Pool(settings));
-        }
-
-        private static void PopulatePools()
-        {
-            foreach (var settings in PoolSettings)
-                if (!Pools.ContainsKey(settings.name))
-                    Pools.Add(settings.name, new Pool(settings));
+            if (!showAnalytics) return;
+            for (var i = 0; i < mPool.Count; i++)
+            {
+                if (!mPool[i].showAnalytics) continue;
+                var poolName = mPool[i].name;
+                GUI.Label(
+                    new Rect(10, 10 + i * 40, 400, 20),
+                    poolName
+                );
+                GUI.Label(
+                    new Rect(10, 30 + i * 40, 400, 20),
+                    "Available in Pool: " + TotalInPool(poolName) + " Active: " + TotalActive(poolName)
+                );
+            }
         }
 
         public static GameObject Get(string poolName, Vector3 position, Quaternion rotation, Transform parent)
@@ -59,7 +61,7 @@ namespace ObjectPool.Scripts
             return obj;
         }
 
-        public static GameObject Get(string poolName, Vector3 position)
+        private static GameObject Get(string poolName, Vector3 position)
         {
             var obj = Get(poolName);
             if (obj) obj.transform.position = position;
@@ -87,19 +89,19 @@ namespace ObjectPool.Scripts
             return objects;
         }
 
-        public Pool GetPool(string poolName)
+        private Pool GetPool(string poolName)
         {
             return Pools[poolName];
         }
 
-        public static int TotalInPool(string poolName)
+        private static int TotalInPool(string poolName)
         {
             var pool = Instance.GetPool(poolName);
             if (pool != null) return pool.TotalInPool;
             return 0;
         }
 
-        public static int TotalActive(string poolName)
+        private static int TotalActive(string poolName)
         {
             var pool = Instance.GetPool(poolName);
             if (pool != null) return pool.TotalActive;
@@ -117,33 +119,9 @@ namespace ObjectPool.Scripts
                         DestroyImmediate(obj);
             Pools = new Dictionary<string, Pool>();
 
-            foreach (var settings in m_pool)
+            foreach (var settings in mPool)
                 if (!Pools.ContainsKey(settings.name))
                     Pools.Add(settings.name, new Pool(settings));
         }
-
-        #region Fields
-
-        private const string ERROR_MISSING_MANAGER = "PoolManager script required.";
-        public bool debug = true;
-        public List<PoolSettings> m_pool = new();
-        public bool showAnalytics;
-        private Dictionary<string, Pool> pools;
-
-        #endregion
-
-        #region Properties
-
-        public static List<PoolSettings> PoolSettings => Instance.m_pool;
-
-        private static PoolManager Instance { get; set; }
-
-        public static Dictionary<string, Pool> Pools
-        {
-            get => Instance.pools ?? (Instance.pools = new Dictionary<string, Pool>());
-            private set => Instance.pools = value;
-        }
-
-        #endregion
     }
 }

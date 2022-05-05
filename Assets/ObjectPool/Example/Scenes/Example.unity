@@ -2817,20 +2817,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dda56d895cffe44dadc9670de012a1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug: 1
-  m_pool:
+  mPool:
   - name: SpherePool
     prefab: {fileID: 1019533563834558, guid: a190bad6138ae9444a900486a95d3d30, type: 3}
     startingItemCount: 10
     maxItemCount: 10
-    parent: {fileID: 1906366004}
+    parent: {fileID: 0}
     allowUnrestrictedGrowth: 0
     showAnalytics: 0
   - name: CubePool
     prefab: {fileID: 1512229642624436, guid: 7aa29bc7804e6b94bb43136a04e2f70e, type: 3}
     startingItemCount: 10
     maxItemCount: 10
-    parent: {fileID: 1906366004}
+    parent: {fileID: 0}
     allowUnrestrictedGrowth: 1
     showAnalytics: 0
   showAnalytics: 0

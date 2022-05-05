@@ -4,11 +4,9 @@ namespace ObjectPool.Scripts
 {
     public class PooledItem : MonoBehaviour
     {
-        public string name;
-
-        public Pool Pool;
-
-        public Rigidbody Rigidbody { get; private set; }
+        public new string name;
+        public Pool pool;
+        private Rigidbody Rigidbody { get; set; }
 
         private void OnEnable()
         {
@@ -23,7 +21,7 @@ namespace ObjectPool.Scripts
         private void OnDisable()
         {
             if (gameObject == null) return;
-            Pool?.Deactivate(gameObject);
+            pool?.Deactivate(gameObject);
         }
     }
 }
