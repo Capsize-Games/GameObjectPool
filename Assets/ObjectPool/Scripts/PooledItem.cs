@@ -7,16 +7,10 @@ namespace ObjectPool.Scripts
         public string name;
 
         public Pool Pool;
-        
+
         public Rigidbody Rigidbody { get; private set; }
 
-        void OnDisable()
-        {
-            if (gameObject == null) return;
-            Pool?.Deactivate(gameObject);
-        }
-
-        void OnEnable()
+        private void OnEnable()
         {
             if (Rigidbody == null) Rigidbody = GetComponent<Rigidbody>();
             if (Rigidbody != null)
@@ -24,6 +18,12 @@ namespace ObjectPool.Scripts
                 Rigidbody.velocity = Vector3.zero;
                 Rigidbody.angularVelocity = Vector3.zero;
             }
+        }
+
+        private void OnDisable()
+        {
+            if (gameObject == null) return;
+            Pool?.Deactivate(gameObject);
         }
     }
 }

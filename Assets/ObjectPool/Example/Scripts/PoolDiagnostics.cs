@@ -3,17 +3,17 @@ using UnityEngine;
 
 namespace ObjectPool.Example.Scripts
 {
-    class PoolDiagnostics : Benchmarker
+    internal class PoolDiagnostics : Benchmarker
     {
         public string poolName = "";
 
-        void Update()
+        private void Update()
         {
             if (Input.GetMouseButton(0)) StartDiagnostics(5000);
             if (RunDiagnostics) Run();
         }
 
-        new protected void Run()
+        protected new void Run()
         {
             runstart = Time.realtimeSinceStartup;
             var obj = PoolManager.Get(poolName);

@@ -2,19 +2,25 @@ using UnityEngine;
 
 namespace ObjectPool.Example.Scripts
 {
-    class Benchmarker : MonoBehaviour
+    internal class Benchmarker : MonoBehaviour
     {
-        bool runDiagnostics;
-        float[] results;
-        int totalRuns;
-        int maxRuns;
-        string report;
-        float total;
+        private int maxRuns;
+        private string report;
+        private float[] results;
+        private bool runDiagnostics;
         protected float runstart;
+        private float total;
+        private int totalRuns;
 
-        protected bool RunDiagnostics
+        protected bool RunDiagnostics => totalRuns < maxRuns && runDiagnostics;
+
+        private void OnGUI()
         {
-            get { return totalRuns < maxRuns && runDiagnostics; }
+            if (report != null)
+                GUI.Label(
+                    new Rect(10, 90, 600, 20),
+                    report
+                );
         }
 
         protected void StartDiagnostics(int maxRuns)
@@ -29,21 +35,13 @@ namespace ObjectPool.Example.Scripts
 
         protected void Run()
         {
-            float t = Time.realtimeSinceStartup - runstart;
+            var t = Time.realtimeSinceStartup - runstart;
             results[totalRuns] = t;
             total += results[totalRuns];
-            report = "Average runtime (" + (totalRuns + 1) + " iterations): " + total / (float)totalRuns + " with a total runtime of " + total;
+            report = "Average runtime (" + (totalRuns + 1) + " iterations): " + total / totalRuns +
+                     " with a total runtime of " + total;
             totalRuns += 1;
             if (totalRuns >= maxRuns) runDiagnostics = false;
-        }
-
-        void OnGUI()
-        {
-            if (report != null)
-                GUI.Label(
-                    new Rect(10, 90, 600, 20),
-                    report
-                );
         }
     }
 }

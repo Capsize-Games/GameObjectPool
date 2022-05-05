@@ -2,17 +2,17 @@ using UnityEngine;
 
 namespace ObjectPool.Example.Scripts
 {
-    class Shape : MonoBehaviour
+    internal class Shape : MonoBehaviour
     {
         public float timeOutSpeed = 0.2f;
-        private float timeout = 0;
+        private float timeout;
 
-        void Awake()
+        private void Awake()
         {
             timeout = 0;
         }
 
-        void Update()
+        private void Update()
         {
             timeout += Time.deltaTime * timeOutSpeed;
 

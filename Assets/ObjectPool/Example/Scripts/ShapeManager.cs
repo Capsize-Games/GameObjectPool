@@ -4,13 +4,13 @@ using UnityEngine;
 namespace ObjectPool.Example.Scripts
 {
     /// <summary>
-    /// This class is meant to demonstrate how to use an object pool.
-    /// Use the same techniques found in this class wherever you need to spawn a game object from the Object Pool.
+    ///     This class is meant to demonstrate how to use an object pool.
+    ///     Use the same techniques found in this class wherever you need to spawn a game object from the Object Pool.
     /// </summary>
-    class ShapeManager : MonoBehaviour
+    internal class ShapeManager : MonoBehaviour
     {
-        const string cubePool = "CubePool";
-        const string spherePool = "SpherePool";
+        private const string cubePool = "CubePool";
+        private const string spherePool = "SpherePool";
         public GameObject spherePrefab;
 
         // Use the following code to add a pool at run-time (not recommended)
@@ -30,29 +30,23 @@ namespace ObjectPool.Example.Scripts
         */
 
         /// <summary>
-        /// Listen for mouse clicks and get an object from the appropriate PoolManager.
-        /// After an object is returned from the PoolManager, it is passed to the SetPosition method.
-        /// These same techniques could be used for things such as FPS bullet spawners in an FPS game.
+        ///     Listen for mouse clicks and get an object from the appropriate PoolManager.
+        ///     After an object is returned from the PoolManager, it is passed to the SetPosition method.
+        ///     These same techniques could be used for things such as FPS bullet spawners in an FPS game.
         /// </summary>
-        void Update()
+        private void Update()
         {
-            Vector3 location = new Vector3(
+            var location = new Vector3(
                 Camera.main.ScreenToWorldPoint(Input.mousePosition).x,
                 Camera.main.ScreenToWorldPoint(Input.mousePosition).y,
                 0
             );
 
             // On left mouse click, spawn a cube object from the cube pool.
-            if (Input.GetMouseButton(0))
-            {
-                PoolManager.Get(cubePool, location, Random.rotation);
-            }
+            if (Input.GetMouseButton(0)) PoolManager.Get(cubePool, location, Random.rotation);
 
             // On right mouse click, spawn a sphere object from the sphere pool.
-            if (Input.GetMouseButton(1))
-            {
-                PoolManager.Get(spherePool, location, Random.rotation);
-            }
+            if (Input.GetMouseButton(1)) PoolManager.Get(spherePool, location, Random.rotation);
         }
     }
 }
