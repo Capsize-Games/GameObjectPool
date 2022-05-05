@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using ObjectPool.Scripts;
 using UnityEditor;
 
 namespace GameObjectPool
@@ -14,7 +14,7 @@ namespace GameObjectPool
 
             if (GUILayout.Button("Add Pool"))
             {
-                poolManager.m_pool.Add(new PoolSettings());
+                poolManager.mPool.Add(new PoolSettings());
             }
 
             if (GUILayout.Button("Regenerate pools"))

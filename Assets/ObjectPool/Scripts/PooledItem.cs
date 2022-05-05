@@ -1,22 +1,14 @@
 using UnityEngine;
 
-namespace GameObjectPool
+namespace ObjectPool.Scripts
 {
     public class PooledItem : MonoBehaviour
     {
-        public string name;
+        public new string name;
+        public Pool pool;
+        private Rigidbody Rigidbody { get; set; }
 
-        public Pool Pool;
-        
-        public Rigidbody Rigidbody { get; private set; }
-
-        void OnDisable()
-        {
-            if (gameObject == null) return;
-            Pool?.Deactivate(gameObject);
-        }
-
-        void OnEnable()
+        private void OnEnable()
         {
             if (Rigidbody == null) Rigidbody = GetComponent<Rigidbody>();
             if (Rigidbody != null)
@@ -24,6 +16,12 @@ namespace GameObjectPool
                 Rigidbody.velocity = Vector3.zero;
                 Rigidbody.angularVelocity = Vector3.zero;
             }
+        }
+
+        private void OnDisable()
+        {
+            if (gameObject == null) return;
+            pool?.Deactivate(gameObject);
         }
     }
 }

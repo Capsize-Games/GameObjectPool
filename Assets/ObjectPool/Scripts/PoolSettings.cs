@@ -1,10 +1,9 @@
-using UnityEngine;
 using System;
-using System.Collections;
+using UnityEngine;
 
-namespace GameObjectPool
+namespace ObjectPool.Scripts
 {
-    [System.Serializable]
+    [Serializable]
     public class PoolSettings
     {
         public string name;
@@ -12,7 +11,7 @@ namespace GameObjectPool
         public int startingItemCount;
         public int maxItemCount;
         public Transform parent;
-        public bool allowUnrestrictedGrowth = false;
+        public bool allowUnrestrictedGrowth;
         public bool showAnalytics;
     }
 }

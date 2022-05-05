@@ -1,24 +1,24 @@
 using UnityEngine;
 
-namespace GameObjectPool
+namespace ObjectPool.Example.Scripts
 {
-    class Shape : MonoBehaviour
+    internal class Shape : MonoBehaviour
     {
         public float timeOutSpeed = 0.2f;
-        private float timeout = 0;
+        private float _timeout;
 
-        void Awake()
+        private void Awake()
         {
-            timeout = 0;
+            _timeout = 0;
         }
 
-        void Update()
+        private void Update()
         {
-            timeout += Time.deltaTime * timeOutSpeed;
+            _timeout += Time.deltaTime * timeOutSpeed;
 
-            if (timeout >= 1f)
+            if (_timeout >= 1f)
             {
-                timeout = 0;
+                _timeout = 0;
                 transform.gameObject.SetActive(false);
             }
         }
